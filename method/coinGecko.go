@@ -1,4 +1,4 @@
-package main
+package method
 
 import (
 	"encoding/json"
@@ -44,7 +44,6 @@ func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Coin, error) {
 		return nil, fmt.Errorf("request failed with status %d", resp.StatusCode)
 	}
 	/*
-		Store the prices of tokens returned by the Coingecko API.
 		The outer map has a key for each token ID, and the corresponding value is an inner map that
 		contains the prices of the token in USD
 	*/
@@ -68,7 +67,6 @@ func (cg *CoinGecko) GetCategories() ([]Coin, error) {
 	}
 
 	defer resp.Body.Close()
-
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to get categories, status code: %d", resp.StatusCode)
 	}

@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package coin_service;
+
+option go_package = "../coinService";
+
+service CoinGecko {
+  rpc List (Empty) returns (ListResponse) {}
+  rpc GetTokenPrice (GetTokenPriceRequest) returns (GetTokenPriceResponse) {}
+  rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse) {}
+}
+
+message Empty {
+
+}
+
+message ListResponse {
+  repeated Coin coins = 1;
+}
+
+message GetTokenPriceRequest {
+  string name = 1;
+}
+
+message GetTokenPriceResponse {
+  double usd = 1;
+}
+
+message GetCategoriesRequest {
+}
+
+message GetCategoriesResponse {
+  repeated Coin categories = 1;
+}
+
+message Coin {
+  string id = 1;
+  string name = 2;
+  string symbol = 3;
+  float usd = 4;
+  string category = 5;
+  double market_cap = 6;
+  double market_cap_change_24h = 7;
+  float total_volume = 8;
+  int32 market_data = 9;
+}
+
+
