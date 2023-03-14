@@ -1,10 +1,10 @@
 package main
 
 import (
-	pb "CoinList/gRPC/coinService"
-	main2 "CoinList/method"
 	"context"
 	"fmt"
+	pb "github.com/Yongwen6580/CoinListAPI/gRPC/coinService"
+	main2 "github.com/Yongwen6580/CoinListAPI/method"
 	"google.golang.org/grpc"
 	"log"
 	"net"

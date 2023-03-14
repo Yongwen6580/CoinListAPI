@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package coin_service;
 
-option go_package = "../coinService";
+option go_package = "github.com/Yongwen6580/CoinListAPI/gRPC/coinService";
 
 service CoinGecko {
   rpc List (Empty) returns (ListResponse) {}

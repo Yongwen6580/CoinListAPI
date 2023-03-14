@@ -1,8 +1,8 @@
 package main
 
 import (
-	"CoinList/method"
 	"fmt"
+	"github.com/Yongwen6580/CoinListAPI/method"
 	"log"
 )
 
