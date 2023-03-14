@@ -20,9 +20,8 @@
 
     Execute the following two command to generate gRPC dependencies.
     
-       protoc --go_out=. Coin_service.proto
-    
-       protoc --go-grpc_out=. coin_service.proto 
+       go mod download
+ 
 
 # Usage:
 
