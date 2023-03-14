@@ -4,7 +4,9 @@
 
 # Requirements To run this project: 
 
-you will need Go programming language to be installed. https://go.dev/doc/install
+   1) Go programming language to be installed. https://go.dev/doc/install
+
+   2) Protocol Buffers to be installed. https://grpc.io/docs/protoc-installation/
 
 # Installation:
 
