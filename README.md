@@ -16,9 +16,7 @@
 
 2) Install dependencies:
 
-   Navigate to the cloned directory and navigate to the coinService folder : cd coinService
-
-    Execute the following two command to generate gRPC dependencies.
+   Navigate to the cloned directory. Execute the following command to generate gRPC dependencies.
     
        go mod download
  
