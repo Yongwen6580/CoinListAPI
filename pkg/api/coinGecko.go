@@ -1,4 +1,4 @@
-package method
+package api
 
 import (
 	"encoding/json"
@@ -10,28 +10,20 @@ import (
 type CoinGecko struct {
 }
 
-// List cg receiver, List() name of the method, type is []Coin
-func (cg *CoinGecko) List() []Coin {
+func (cg *CoinGecko) List() ([]Coin, error) {
 	resp, err := http.Get("https://api.coingecko.com/api/v3/coins/list")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 	var coins []Coin //slice
 	if err := json.NewDecoder(resp.Body).Decode(&coins); err != nil {
-		panic(err)
+		return nil, err
 	}
-	/*
-	   The response body of the request is then decoded into a slice of Coin structs (coins) using json.NewDecoder and json.Unmarshal.
-	    If there's an error decoding the response, the program panics.
-	*/
-	for _, coin := range coins {
-		log.Printf("ID: %s, Name: %s, Symbol: %s\n", coin.Id, coin.Name, coin.Symbol)
-	}
-	return coins
+	return coins, nil
 }
 
-func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Coin, error) {
+func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Price, error) {
 
 	url := "https://api.coingecko.com/api/v3/simple/price?ids=" + tokenId + "&vs_currencies=usd"
 	resp, err := http.Get(url)
@@ -57,29 +49,30 @@ func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Coin, error) {
 	if !ok {
 		return nil, fmt.Errorf("USD price not found for token %s", tokenId)
 	}
-	return &Coin{Usd: usdPrice}, nil
+	return &Price{Usd: usdPrice}, nil
 }
 
-func (cg *CoinGecko) GetCategories() ([]Coin, error) {
-	resp, err := http.Get("https://api.coingecko.com/api/v3/coins/categories")
+func (cg *CoinGecko) GetTrending() ([]Top, error) {
+	resp, err := http.Get("https://api.coingecko.com/api/v3/search/trending")
 	if err != nil {
 		return nil, err
 	}
-
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to get categories, status code: %d", resp.StatusCode)
+		return nil, fmt.Errorf("failed to get trending coins, status code: %d", resp.StatusCode)
 	}
 
-	var categories []Coin
-	if err := json.NewDecoder(resp.Body).Decode(&categories); err != nil {
+	var trending struct {
+		Coins []struct {
+			Item Top `json:"item"`
+		} `json:"coins"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&trending); err != nil {
 		return nil, err
 	}
-
-	for i, category := range categories {
-		categories[i].Name = fmt.Sprintf("ID: %s, Markets: %f, MarketCapChange%f\n", category.Id, category.MarketCap, category.MarketCapChange)
-		log.Printf("ID: %s, Markets: %f, MarketCapChange%f\n", category.Id, category.MarketCap, category.MarketCapChange)
+	var topCoins []Top
+	for _, c := range trending.Coins {
+		topCoins = append(topCoins, c.Item)
 	}
-
-	return categories, nil
+	return topCoins[:7], nil
 }

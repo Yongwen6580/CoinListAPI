@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package coin_service;
+package CoinListAPI;
 
 option go_package = "github.com/Yongwen6580/CoinListAPI/gRPC/coinService";
 
 service CoinGecko {
   rpc List (Empty) returns (ListResponse) {}
   rpc GetTokenPrice (GetTokenPriceRequest) returns (GetTokenPriceResponse) {}
-  rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse) {}
+  rpc GetTrendingCoins (GetTrendingCoinsRequest) returns (GetTrendingCoinsResponse) {}
 }
 
 message Empty {
@@ -26,11 +26,11 @@ message GetTokenPriceResponse {
   double usd = 1;
 }
 
-message GetCategoriesRequest {
+message GetTrendingCoinsRequest {
 }
 
-message GetCategoriesResponse {
-  repeated Coin categories = 1;
+message GetTrendingCoinsResponse {
+  repeated Coin topCoin = 1;
 }
 
 message Coin {
@@ -39,10 +39,9 @@ message Coin {
   string symbol = 3;
   float usd = 4;
   string category = 5;
-  double market_cap = 6;
-  double market_cap_change_24h = 7;
-  float total_volume = 8;
-  int32 market_data = 9;
+  int64 market_cap = 6;
+  int64  coinID = 7;
+  float price = 8;
 }
 
 
