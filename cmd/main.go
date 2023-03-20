@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/Yongwen6580/CoinListAPI/pkg/api"
 	"log"
 )
@@ -13,7 +12,6 @@ func main() {
 	for _, coin := range coins {
 		log.Printf("ID: %s, Name: %s, Symbol: %s\n", coin.Id, coin.Name, coin.Symbol)
 	}
-
 	//call the get GetTrending() method
 	topCoin, err := cg.GetTrending()
 	if err != nil {
@@ -23,10 +21,8 @@ func main() {
 		log.Printf(" Coin ID: %d, Name: %s, Symbol: %s, price_btc: %9f, Market Cap Rank: %d\n", topC.CoinID, topC.Name, topC.Symbol, topC.Price, topC.MarketCapRank)
 	}
 	//call the get GetTokenPrice() method
-	var inputPrice string
-	fmt.Println("Please enter the name of coin for price")
-	fmt.Scanln(&inputPrice)
-	price, err := cg.GetTokenPrice(inputPrice)
+	name := "bitcoin"
+	price, err := cg.GetTokenPrice(name)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	pb "github.com/Yongwen6580/CoinListAPI/pkg/api"
 	"github.com/Yongwen6580/CoinListAPI/pkg/gRPC/coinService"
-
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -22,7 +20,10 @@ func (s *server) mustEmbedUnimplementedCoinGeckoServer() {
 
 func (s *server) List(ctx context.Context, req *coinService.Empty) (*coinService.ListResponse, error) {
 	cg := &pb.CoinGecko{}
-	coins, nil := cg.List()
+	coins, err := cg.List()
+	if err != nil {
+		return nil, err
+	}
 	var resp coinService.ListResponse
 	for _, coin := range coins {
 		resp.Coins = append(resp.Coins, &coinService.Coin{
@@ -39,7 +40,7 @@ func (s *server) GetTokenPrice(ctx context.Context, req *coinService.GetTokenPri
 	priceInput := req.Name
 	price, err := cg.GetTokenPrice(priceInput)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &coinService.GetTokenPriceResponse{Usd: price.Usd}, nil
 }
@@ -71,7 +72,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	coinService.RegisterCoinGeckoServer(s, &server{})
-	fmt.Println("Starting server on port :50053...")
+	log.Println("Starting server on port :50053...")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}

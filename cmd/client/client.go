@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	pb "github.com/Yongwen6580/CoinListAPI/pkg/gRPC/coinService"
 	"google.golang.org/grpc"
 	"log"
@@ -36,15 +35,10 @@ func main() {
 	}
 
 	//testing price method
-	var inputName string
-	fmt.Println("Please enter the name of the coin for price:")
-	fmt.Scanln(&inputName)
-	price, err := client.GetTokenPrice(context.Background(), &pb.GetTokenPriceRequest{Name: inputName})
+	name := "bitcoin"
+	price, err := client.GetTokenPrice(context.Background(), &pb.GetTokenPriceRequest{Name: name})
 	if err != nil {
 		log.Fatalf("could not get token price: %v", err)
 	}
-	log.Printf("Price of %s: $%.2f\n", inputName, price.Usd)
-
-	//testing the third method
-
+	log.Printf("Price of %s: $%.2f\n", name, price.Usd)
 }

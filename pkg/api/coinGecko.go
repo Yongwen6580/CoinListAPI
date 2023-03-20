@@ -24,7 +24,6 @@ func (cg *CoinGecko) List() ([]Coin, error) {
 }
 
 func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Price, error) {
-
 	url := "https://api.coingecko.com/api/v3/simple/price?ids=" + tokenId + "&vs_currencies=usd"
 	resp, err := http.Get(url)
 	if err != nil {
@@ -61,7 +60,6 @@ func (cg *CoinGecko) GetTrending() ([]Top, error) {
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to get trending coins, status code: %d", resp.StatusCode)
 	}
-
 	var trending struct {
 		Coins []struct {
 			Item Top `json:"item"`
