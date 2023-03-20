@@ -34,16 +34,16 @@ func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Price, error) {
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("request failed with status %d", resp.StatusCode)
 	}
-	/*
-		The outer map has a key for each token ID, and the corresponding value is an inner map that
-		contains the prices of the token in USD
-	*/
+	//The outer map has a key for each token ID, and the corresponding value is an inner map that
+	//contains the prices of the token in USD
+	//create a map
 	var price map[string]map[string]float64
 	if err := json.NewDecoder(resp.Body).Decode(&price); err != nil {
 		return nil, err
 	}
 	//assigns the USD price to the usdPrice variable and assigns a boolean value to the ok variable that
 	//indicates whether the USD price was found in the price map for the given token ID.
+	//store the value to the map
 	usdPrice, ok := price[tokenId]["usd"]
 	if !ok {
 		return nil, fmt.Errorf("USD price not found for token %s", tokenId)
@@ -59,11 +59,6 @@ func (cg *CoinGecko) GetTrending() ([]Top, error) {
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to get trending coins, status code: %d", resp.StatusCode)
-	}
-	var trending struct {
-		Coins []struct {
-			Item Top `json:"item"`
-		} `json:"coins"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&trending); err != nil {
 		return nil, err

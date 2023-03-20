@@ -21,3 +21,9 @@ type Top struct {
 	Price         float64 `json:"price_btc"`
 	MarketCapRank int     `json:"market_cap_rank"`
 }
+
+var trending struct {
+	Coins []struct {
+		Item Top `json:"item"`
+	} `json:"coins"`
+}
