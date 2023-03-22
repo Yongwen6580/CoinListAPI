@@ -36,7 +36,7 @@
        
 4) change the directory to coinService
 
-       cd pkg/gRPC/coinService
+       cd pkg/gRPC/proto
        
 5) Create the proto file with the required services and messages in the proto directory(In this case coinService directory)
 
