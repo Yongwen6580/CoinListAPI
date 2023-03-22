@@ -2,15 +2,16 @@ package main
 
 import (
 	"context"
-	pb "github.com/Yongwen6580/CoinListAPI/pkg/api"
-	"github.com/Yongwen6580/CoinListAPI/pkg/gRPC/coinService"
-	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	cg "github.com/Yongwen6580/CoinListAPI/pkg/api"
+	pb "github.com/Yongwen6580/CoinListAPI/pkg/gRPC/proto"
+	"google.golang.org/grpc"
 )
 
 type server struct {
-	coinService.UnimplementedCoinGeckoServer
+	pb.UnimplementedCoinGeckoServer
 }
 
 func (s *server) mustEmbedUnimplementedCoinGeckoServer() {
@@ -18,15 +19,15 @@ func (s *server) mustEmbedUnimplementedCoinGeckoServer() {
 	panic("implement me")
 }
 
-func (s *server) List(ctx context.Context, req *coinService.Empty) (*coinService.ListResponse, error) {
-	cg := &pb.CoinGecko{}
-	coins, err := cg.List()
+func (s *server) List(ctx context.Context, req *pb.Empty) (*pb.ListResponse, error) {
+	coinGecko := &cg.CoinGecko{}
+	coins, err := coinGecko.List()
 	if err != nil {
 		return nil, err
 	}
-	var resp coinService.ListResponse
+	var resp pb.ListResponse
 	for _, coin := range coins {
-		resp.Coins = append(resp.Coins, &coinService.Coin{
+		resp.Coins = append(resp.Coins, &pb.Coin{
 			Id:     coin.Id,
 			Name:   coin.Name,
 			Symbol: coin.Symbol,
@@ -35,25 +36,25 @@ func (s *server) List(ctx context.Context, req *coinService.Empty) (*coinService
 	return &resp, nil
 }
 
-func (s *server) GetTokenPrice(ctx context.Context, req *coinService.GetTokenPriceRequest) (*coinService.GetTokenPriceResponse, error) {
-	cg := &pb.CoinGecko{}
+func (s *server) GetTokenPrice(ctx context.Context, req *pb.GetTokenPriceRequest) (*pb.GetTokenPriceResponse, error) {
+	coinGecko := &cg.CoinGecko{}
 	priceInput := req.Name
-	price, err := cg.GetTokenPrice(priceInput)
+	price, err := coinGecko.GetTokenPrice(priceInput)
 	if err != nil {
 		return nil, err
 	}
-	return &coinService.GetTokenPriceResponse{Usd: price.Usd}, nil
+	return &pb.GetTokenPriceResponse{Usd: price.Usd}, nil
 }
 
-func (s *server) GetTrendingCoins(ctx context.Context, req *coinService.GetTrendingCoinsRequest) (*coinService.GetTrendingCoinsResponse, error) {
-	cg := &pb.CoinGecko{}
-	topCoin, err := cg.GetTrending()
+func (s *server) GetTrendingCoins(ctx context.Context, req *pb.GetTrendingCoinsRequest) (*pb.GetTrendingCoinsResponse, error) {
+	coinGecko := &cg.CoinGecko{}
+	topCoin, err := coinGecko.GetTrending()
 	if err != nil {
 		return nil, err
 	}
-	resp := &coinService.GetTrendingCoinsResponse{}
+	resp := &pb.GetTrendingCoinsResponse{}
 	for _, trending := range topCoin[:7] {
-		resp.TopCoin = append(resp.TopCoin, &coinService.Coin{
+		resp.TopCoin = append(resp.TopCoin, &pb.Coin{
 			Id:        trending.Id,
 			CoinID:    trending.CoinID,
 			Name:      trending.Name,
@@ -71,7 +72,7 @@ func main() {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	coinService.RegisterCoinGeckoServer(s, &server{})
+	pb.RegisterCoinGeckoServer(s, &server{})
 	log.Println("Starting server on port :50053...")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)

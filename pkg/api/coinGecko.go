@@ -27,12 +27,12 @@ func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Price, error) {
 	url := "https://api.coingecko.com/api/v3/simple/price?ids=" + tokenId + "&vs_currencies=usd"
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Printf("Error fetching price for token %s: %s", tokenId, err.Error())
+		log.Printf("Error fetching price for token %v: %v", tokenId, err.Error())
 		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("request failed with status %d", resp.StatusCode)
+		return nil, fmt.Errorf("request failed with status %v", resp.StatusCode)
 	}
 	//The outer map has a key for each token ID, and the corresponding value is an inner map that
 	//contains the prices of the token in USD
@@ -46,7 +46,7 @@ func (cg *CoinGecko) GetTokenPrice(tokenId string) (*Price, error) {
 	//store the value to the map
 	usdPrice, ok := price[tokenId]["usd"]
 	if !ok {
-		return nil, fmt.Errorf("USD price not found for token %s", tokenId)
+		return nil, fmt.Errorf("USD price not found for token %v", tokenId)
 	}
 	return &Price{Usd: usdPrice}, nil
 }
@@ -58,7 +58,7 @@ func (cg *CoinGecko) GetTrending() ([]Top, error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to get trending coins, status code: %d", resp.StatusCode)
+		return nil, fmt.Errorf("failed to get trending coins, status code: %v", resp.StatusCode)
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&trending); err != nil {
 		return nil, err
@@ -67,5 +67,5 @@ func (cg *CoinGecko) GetTrending() ([]Top, error) {
 	for _, c := range trending.Coins {
 		topCoins = append(topCoins, c.Item)
 	}
-	return topCoins[:7], nil
+	return topCoins, nil
 }
