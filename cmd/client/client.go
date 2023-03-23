@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
-	pb "github.com/Yongwen6580/CoinListAPI/pkg/gRPC/coinService"
-	"google.golang.org/grpc"
 	"log"
+
+	pb "github.com/Yongwen6580/CoinListAPI/pkg/gRPC/proto"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -22,7 +23,7 @@ func main() {
 		log.Fatalf("could not list coins: %v", err)
 	}
 	for _, coin := range coins.Coins {
-		log.Printf("ID: %s, Name: %s, Symbol: %s\n", coin.Id, coin.Name, coin.Symbol)
+		log.Printf("ID: %v, Name: %v, Symbol: %v\n", coin.Id, coin.Name, coin.Symbol)
 	}
 
 	//testing trending method
@@ -31,7 +32,7 @@ func main() {
 		log.Fatalf("could not get Treading: %v", err)
 	}
 	for _, trending := range trendingCoin.TopCoin {
-		log.Printf("ID: %s, Coin ID: %d, Name: %s, Symbol: %s, Price btc: %.10f, Market Cap Change: %d\n", trending.Id, trending.CoinID, trending.Name, trending.Symbol, trending.Price, trending.MarketCap)
+		log.Printf("ID: %v, Coin ID: %v, Name: %v, Symbol: %v, Price btc: %v, Market Cap Change: %v\n", trending.Id, trending.CoinID, trending.Name, trending.Symbol, trending.Price, trending.MarketCap)
 	}
 
 	//testing price method
@@ -40,5 +41,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not get token price: %v", err)
 	}
-	log.Printf("Price of %s: $%.2f\n", name, price.Usd)
+	log.Printf("Price of %v: $%v\n", name, price.Usd)
 }
