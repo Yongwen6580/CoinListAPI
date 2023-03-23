@@ -34,5 +34,10 @@ func TestGetTokenPrice(t *testing.T) {
 	}
 	if price.Usd <= 0 {
 		t.Errorf("expected price of %s to be greater than 0, got %.2f", "bitcoin", price.Usd)
+		_, err := cg.List()
+
+		if err != nil {
+			t.Errorf("call to List failed!")
+		}
 	}
 }
