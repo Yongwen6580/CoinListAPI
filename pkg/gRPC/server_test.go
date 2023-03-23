@@ -25,7 +25,7 @@ func TestList(t *testing.T) {
 		t.Fatalf("could not list coins: %v", err)
 	}
 	if len(coins.Coins) == 0 {
-		t.Errorf("expected more than 0 coins, got %d", len(coins.Coins))
+		t.Errorf("expected more than 0 coins, got %v", len(coins.Coins))
 	}
 }
 
@@ -41,7 +41,7 @@ func TestGetTrending(t *testing.T) {
 		t.Fatalf("could not get Treading: %v", err)
 	}
 	if len(trendingCoin.TopCoin) == 0 {
-		t.Errorf("expected more than 0 top coins, got %d", len(trendingCoin.TopCoin))
+		t.Errorf("expected more than 0 top coins, got %v", len(trendingCoin.TopCoin))
 	}
 }
 
@@ -57,6 +57,6 @@ func TestGetTokenPrice(t *testing.T) {
 		t.Fatalf("could not get token price: %v", err)
 	}
 	if price.Usd <= 0 {
-		t.Errorf("expected price of %s to be greater than 0, got %.2f", "bitcoin", price.Usd)
+		t.Errorf("expected price of %v to be greater than 0, got %.2v", "bitcoin", price.Usd)
 	}
 }
