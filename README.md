@@ -44,6 +44,10 @@
      
        protoc --go-grpc_out=. coin_service.proto
        
+if you have an error showing "Please specify a program using absolute path" (skip this step if you don't have error)
+
+    export PATH="$PATH:$(go env GOPATH)/bin"
+       
 6) Initialize a Go module
 
        go mod tidy
