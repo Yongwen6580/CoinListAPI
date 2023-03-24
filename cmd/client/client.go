@@ -2,10 +2,9 @@ package main
 
 import (
 	"context"
-	"log"
-
 	pb "github.com/Yongwen6580/CoinListAPI/pkg/gRPC/proto"
 	"google.golang.org/grpc"
+	"log"
 )
 
 func main() {

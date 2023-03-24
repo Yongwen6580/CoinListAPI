@@ -1,8 +1,6 @@
 syntax = "proto3";
-
 package CoinListAPI;
-
-option go_package = ".;coinService";
+option go_package = ".;proto";
 
 service CoinGecko {
   rpc List (ListRequest) returns (ListResponse) {}
@@ -11,7 +9,6 @@ service CoinGecko {
 }
 
 message ListRequest {
-
 }
 
 message ListResponse {

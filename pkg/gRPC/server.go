@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
-	"log"
-	"net"
-
 	cg "github.com/Yongwen6580/CoinListAPI/pkg/api"
 	pb "github.com/Yongwen6580/CoinListAPI/pkg/gRPC/proto"
 	"google.golang.org/grpc"
+	"log"
+	"net"
 )
 
 type server struct {
