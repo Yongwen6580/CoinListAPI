@@ -5,12 +5,12 @@ package CoinListAPI;
 option go_package = ".;coinService";
 
 service CoinGecko {
-  rpc List (Empty) returns (ListResponse) {}
+  rpc List (ListRequest) returns (ListResponse) {}
   rpc GetTokenPrice (GetTokenPriceRequest) returns (GetTokenPriceResponse) {}
   rpc GetTrendingCoins (GetTrendingCoinsRequest) returns (GetTrendingCoinsResponse) {}
 }
 
-message Empty {
+message ListRequest {
 
 }
 

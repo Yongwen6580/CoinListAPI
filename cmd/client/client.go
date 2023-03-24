@@ -18,7 +18,7 @@ func main() {
 	client := pb.NewCoinGeckoClient(conn)
 
 	//testing list method
-	coins, err := client.List(context.Background(), &pb.Empty{})
+	coins, err := client.List(context.Background(), &pb.ListRequest{})
 	if err != nil {
 		log.Fatalf("could not list coins: %v", err)
 	}
