@@ -20,7 +20,7 @@ func TestList(t *testing.T) {
 	defer conn.Close()
 	client := pb.NewCoinGeckoClient(conn)
 	// Call the List() method
-	coins, err := client.List(context.Background(), &pb.Empty{})
+	coins, err := client.List(context.Background(), &pb.ListRequest{})
 	if err != nil {
 		t.Fatalf("could not list coins: %v", err)
 	}
